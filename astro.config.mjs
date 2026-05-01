@@ -9,7 +9,7 @@ import { defineConfig, fontProviders } from 'astro/config';
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://hogecode.github.io',
-	base: '/articles',
+	base: '/',
 	output: 'static',
 	integrations: [
 		mdx(),
