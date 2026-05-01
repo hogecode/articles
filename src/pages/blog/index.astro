@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+import BlogFilter from '../../components/BlogFilter';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import type { CollectionEntry } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+	(a: typeof import('astro:content').CollectionEntry<'blog'>, b: typeof import('astro:content').CollectionEntry<'blog'>) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<BaseHead title={`${SITE_TITLE} - ブログ`} description={SITE_DESCRIPTION} />
+		<style>
+			main {
+				max-width: 1400px;
+				margin: 0 auto;
+				padding: 0 1rem;
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section>
+				<h1 class="text-4xl font-bold mb-8">ブログ</h1>
+				<BlogFilter client:load posts={posts} postsPerPage={6} />
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
