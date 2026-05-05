@@ -154,7 +154,7 @@ export default function BlogFilter({ posts, postsPerPage = POSTS_PER_PAGE }: Blo
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
 					{paginatedPosts.map((post) => (
 						<article key={post.id} className="group border rounded-lg overflow-hidden hover:shadow-md transition">
-							<a href={`/blog/${post.id}/`} className="block h-full">
+							<a href={`/articles/blog/${post.id}/`} className="block h-full">
 								<div className="p-6">
 									<h5 className="text-xl font-bold mb-2 group-hover:text-primary transition">
 										{post.data.title}
@@ -206,7 +206,7 @@ export default function BlogFilter({ posts, postsPerPage = POSTS_PER_PAGE }: Blo
 							<Button
 								key={page}
 								onClick={() => setCurrentPage(page)}
-								variant={page === currentPage ? 'default' : 'outline'}
+								variant={page !== currentPage ? 'default' : 'outline'}
 								size="sm"
 								className="min-w-8"
 							>
