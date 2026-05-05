@@ -15,42 +15,238 @@ const { title, description, pubDate, updatedDate, heroImage, tags = [], category
 	<head>
 		<BaseHead title={title} description={description} />
 		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
+			.blog-wrapper {
+				display: grid;
+				grid-template-columns: 1fr;
+				gap: 2rem;
 				width: 100%;
 			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
+
+			@media (min-width: 1200px) {
+				.blog-wrapper {
+					grid-template-columns: 1fr 280px;
+				}
+			}
+
+			main {
+				width: 100%;
+				margin: 0;
+			}
+
+			.hero-image {
+				width: 100%;
+				margin-bottom: 2rem;
+				overflow: hidden;
 				border-radius: 12px;
 				box-shadow: var(--box-shadow);
 			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
+
+			.hero-image img {
+				display: block;
+				width: 100%;
+				height: auto;
+			}
+
+			.article-container {
+				width: 100%;
+				max-width: 720px;
+				margin: 0 auto;
+				padding: 0 1rem;
+			}
+
+			.article-header {
+				margin-bottom: 3rem;
+				padding-bottom: 2rem;
+				border-bottom: 2px solid rgb(var(--gray-light));
+			}
+
+			.article-title {
+				font-size: 2rem;
+				font-weight: 700;
+				margin: 1rem 0 1.5rem 0;
+				color: rgb(var(--black));
+				line-height: 1.2;
+			}
+
+			.article-meta {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				gap: 1rem;
+				margin-bottom: 1.5rem;
+				color: rgb(var(--gray));
+				font-size: 0.9rem;
+			}
+
+			.meta-item {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+
+			.meta-divider {
+				width: 4px;
+				height: 4px;
+				border-radius: 50%;
+				background-color: rgb(var(--gray));
+				opacity: 0.4;
+			}
+
+			.category-badge {
+				display: inline-block;
+				background-color: rgba(var(--accent), 0.1);
+				color: var(--accent);
+				padding: 0.4rem 0.8rem;
+				border-radius: 6px;
+				font-weight: 600;
+				font-size: 0.85rem;
+			}
+
+			.tags-container {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.75rem;
+				margin-top: 1rem;
+			}
+
+			.tag {
+				display: inline-block;
+				background-color: rgb(var(--gray-light));
 				color: rgb(var(--gray-dark));
+				padding: 0.4rem 0.8rem;
+				border-radius: 6px;
+				font-size: 0.85rem;
+				font-weight: 500;
+				transition: all 0.2s ease;
 			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
+
+			.tag:hover {
+				background-color: rgba(var(--accent), 0.1);
+				color: var(--accent);
 			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
+
+			.article-content {
+				font-size: 0.84rem;
+				line-height: 1.4;
+				color: rgb(var(--gray-dark));
+				font-family: Consolas, 'Courier New', monospace;
 			}
-			.date {
-				margin-bottom: 0.5em;
+
+			.article-content :global(h2) {
+				margin-top: 2rem;
+				margin-bottom: 1rem;
+				padding-top: 1rem;
+			}
+
+			.article-content :global(h3) {
+				margin-top: 1.5rem;
+				margin-bottom: 0.75rem;
+			}
+
+			.article-content :global(p) {
+				margin-bottom: 1.5rem;
+			}
+
+			.article-content :global(pre) {
+				margin: 1.5rem 0;
+				border-radius: 8px;
+				overflow-x: auto;
+			}
+
+			.article-content :global(ul),
+			.article-content :global(ol) {
+				margin: 0.75rem 0 1.5rem 0;
+				padding-left: 2rem;
+				list-style: revert;
+			}
+
+			.article-content :global(ul li),
+			.article-content :global(ol li) {
+				margin-bottom: 0.25rem;
+			}
+
+			.article-content :global(blockquote) {
+				margin: 1.5rem 0;
+				padding-left: 1.5rem;
+				border-left: 4px solid var(--accent);
+				font-style: italic;
 				color: rgb(var(--gray));
 			}
-			.last-updated-on {
-				font-style: italic;
+
+			.toc-sidebar {
+				display: none;
+			}
+
+			@media (min-width: 1200px) {
+				.toc-sidebar {
+					display: block;
+					position: sticky;
+					top: 2rem;
+					height: fit-content;
+				}
+
+				.toc-container {
+					background-color: rgb(var(--gray-light));
+					padding: 1.5rem;
+					border-radius: 8px;
+					font-size: 0.9rem;
+				}
+
+				.toc-title {
+					font-weight: 700;
+					margin-bottom: 1rem;
+					font-size: 0.95rem;
+				}
+
+				.toc-list {
+					list-style: none;
+					padding: 0;
+					margin: 0;
+				}
+
+				.toc-list li {
+					margin-bottom: 0.5rem;
+				}
+
+				.toc-list a {
+					text-decoration: none;
+					color: rgb(var(--gray-dark));
+					transition: color 0.2s;
+				}
+
+				.toc-list a:hover {
+					color: var(--accent);
+				}
+			}
+
+			@media (max-width: 768px) {
+				.article-title {
+					font-size: 1.75rem;
+				}
+
+				.article-meta {
+					flex-direction: column;
+					align-items: flex-start;
+					gap: 0.5rem;
+				}
+
+				.meta-divider {
+					display: none;
+				}
+			}
+
+			.updated-notice {
+				background-color: rgba(var(--accent), 0.05);
+				border-left: 3px solid var(--accent);
+				padding: 1rem;
+				margin-top: 2rem;
+				border-radius: 4px;
+				font-size: 0.95rem;
+				color: rgb(var(--gray-dark));
+			}
+
+			.updated-notice strong {
+				color: var(--accent);
 			}
 		</style>
 	</head>
@@ -58,38 +254,60 @@ const { title, description, pubDate, updatedDate, heroImage, tags = [], category
 	<body>
 		<Header />
 		<main>
-			<article>
-				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
+			<div class="blog-wrapper">
+				<article class="article-container">
+					{heroImage && (
+						<div class="hero-image">
+							<Image width={1020} height={510} src={heroImage} alt={title} />
 						</div>
-						<h1>{title}</h1>
-						{category && <p style="color: rgb(var(--accent)); font-weight: bold;">📁 {category}</p>}
+					)}
+
+					<header class="article-header">
+						<div class="article-meta">
+							<span class="meta-item">
+								<FormattedDate date={pubDate} />
+							</span>
+							{category && (
+								<>
+									<span class="meta-divider"></span>
+									<span class="category-badge">{category}</span>
+								</>
+							)}
+						</div>
+
+						<h1 class="article-title">{title}</h1>
+
 						{tags.length > 0 && (
-							<div style="margin-top: 1em;">
+							<div class="tags-container">
 								{tags.map((tag: string) => (
-									<span style="display: inline-block; background-color: rgb(var(--accent)); color: white; padding: 0.25em 0.75em; border-radius: 1em; margin-right: 0.5em; font-size: 0.9em;">
-										#{tag}
-									</span>
+									<span class="tag">#{tag}</span>
 								))}
 							</div>
 						)}
-						<hr />
+					</header>
+
+					<div class="article-content">
+						<slot />
 					</div>
-					<slot />
-				</div>
-			</article>
+
+					{updatedDate && (
+						<div class="updated-notice">
+							<strong>Last updated:</strong> <FormattedDate date={updatedDate} />
+						</div>
+					)}
+				</article>
+
+				<aside class="toc-sidebar">
+					<div class="toc-container">
+						<div class="toc-title">目次</div>
+						<ul class="toc-list">
+							<li><a href="#getting-started">Getting Started</a></li>
+							<li><a href="#installation">Installation</a></li>
+							<li><a href="#usage">Usage</a></li>
+						</ul>
+					</div>
+				</aside>
+			</div>
 		</main>
 		<Footer />
 	</body>

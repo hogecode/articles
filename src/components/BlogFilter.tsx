@@ -1,4 +1,8 @@
+'use client';
+
 import React, { useState, useMemo } from 'react';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
 
 interface Post {
 	id: string;
@@ -79,69 +83,69 @@ export default function BlogFilter({ posts, postsPerPage = POSTS_PER_PAGE }: Blo
 	};
 
 	return (
-		<div className="w-full max-w-6xl mx-auto px-4 py-8">
+		<div className="w-full max-w-6xl mx-auto mt-8">
 			{/* フィルターセクション */}
-			<div className="mb-8 p-6 bg-gray-50 rounded-lg">
+			<div className="mb-8 p-6 bg-muted rounded-lg border">
 				<div className="mb-6">
-					<h3 className="text-lg font-semibold mb-3">カテゴリー</h3>
+					<h5 className="text-xs font-semibold mb-3">カテゴリー</h5>
 					<div className="flex flex-wrap gap-2">
-						<button
+						<Button
 							onClick={() => handleCategoryChange(null)}
-							className={`px-4 py-2 rounded-full text-sm font-medium transition ${
-								selectedCategory === null
-									? 'bg-blue-600 text-white'
-									: 'bg-white border border-gray-300 text-gray-700 hover:border-blue-400'
-							}`}
+							variant={selectedCategory !== null ? 'default' : 'outline'}
+							size="sm"
 						>
 							すべて
-						</button>
+						</Button>
 						{allCategories.map((category) => (
-							<button
+							<Button
 								key={category}
 								onClick={() => handleCategoryChange(category)}
-								className={`px-4 py-2 rounded-full text-sm font-medium transition ${
-									selectedCategory === category
-										? 'bg-blue-600 text-white'
-										: 'bg-white border border-gray-300 text-gray-700 hover:border-blue-400'
-								}`}
+								variant={selectedCategory !== category ? 'default' : 'outline'}
+								size="sm"
 							>
 								{category}
-							</button>
+							</Button>
 						))}
 					</div>
-				</div>
+				</div>		
 
 				<div>
-					<h3 className="text-lg font-semibold mb-3">タグ</h3>
+					<h5 className="text-xs font-semibold mb-3">タグ</h5>
 					<div className="flex flex-wrap gap-2">
 						{allTags.map((tag) => (
-							<button
+							<Badge
 								key={tag}
 								onClick={() => toggleTag(tag)}
-								className={`px-4 py-2 rounded-full text-sm font-medium transition ${
-									selectedTags.has(tag)
-										? 'bg-green-600 text-white'
-										: 'bg-white border border-gray-300 text-gray-700 hover:border-green-400'
-								}`}
+								variant={selectedTags.has(tag) ? 'outline' : 'default'}
+								className="cursor-pointer"
+								role="button"
+								tabIndex={0}
+								onKeyDown={(e) => {
+									if (e.key === 'Enter' || e.key === ' ') {
+										toggleTag(tag);
+									}
+								}}
 							>
 								{tag}
-							</button>
+							</Badge>
 						))}
 					</div>
 				</div>
 
 				{(selectedTags.size > 0 || selectedCategory) && (
-					<button
+					<Button
 						onClick={clearFilters}
-						className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition"
+						variant="destructive"
+						size="sm"
+						className="mt-4"
 					>
 						フィルターをクリア
-					</button>
+					</Button>
 				)}
 			</div>
 
 			{/* 記事数表示 */}
-			<div className="mb-4 text-gray-600">
+			<div className="mb-4 text-sm text-muted-foreground">
 				{filteredPosts.length} 件の記事が見つかりました
 			</div>
 
@@ -149,32 +153,29 @@ export default function BlogFilter({ posts, postsPerPage = POSTS_PER_PAGE }: Blo
 			{paginatedPosts.length > 0 ? (
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
 					{paginatedPosts.map((post) => (
-						<article key={post.id} className="group border rounded-lg overflow-hidden hover:shadow-lg transition">
-							<a href={`/articles/blog/${post.id}/`} className="block h-full">
+						<article key={post.id} className="group border rounded-lg overflow-hidden hover:shadow-md transition">
+							<a href={`/blog/${post.id}/`} className="block h-full">
 								<div className="p-6">
-									<h3 className="text-xl font-bold mb-2 group-hover:text-blue-600 transition">
+									<h5 className="text-xl font-bold mb-2 group-hover:text-primary transition">
 										{post.data.title}
-									</h3>
-									<p className="text-gray-600 text-sm mb-4">{post.data.description}</p>
+									</h5>
+									<p className="text-muted-foreground text-sm mb-4">{post.data.description}</p>
 
 									{/* メタ情報 */}
 									<div className="flex flex-wrap gap-2 mb-4">
 										{post.data.category && (
-											<span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+											<Badge variant="secondary" className="text-xs">
 												{post.data.category}
-											</span>
+											</Badge>
 										)}
 										{post.data.tags?.map((tag) => (
-											<span
-												key={tag}
-												className="inline-block px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full"
-											>
+											<Badge key={tag} variant="outline" className="text-xs">
 												{tag}
-											</span>
+											</Badge>
 										))}
 									</div>
 
-									<p className="text-gray-400 text-sm">
+									<p className="text-muted-foreground text-xs">
 										{new Date(post.data.pubDate).toLocaleDateString('ja-JP')}
 									</p>
 								</div>
@@ -184,44 +185,44 @@ export default function BlogFilter({ posts, postsPerPage = POSTS_PER_PAGE }: Blo
 				</div>
 			) : (
 				<div className="text-center py-12">
-					<p className="text-gray-500 text-lg">該当する記事がありません</p>
+					<p className="text-muted-foreground text-lg">該当する記事がありません</p>
 				</div>
 			)}
 
 			{/* ページネーション */}
 			{totalPages > 1 && (
-				<div className="flex justify-center items-center gap-2 mt-8">
-					<button
+				<div className="flex justify-center items-center gap-2 mt-8 flex-wrap">
+					<Button
 						onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
 						disabled={currentPage === 1}
-						className="px-4 py-2 border rounded-lg disabled:opacity-50 hover:bg-gray-100"
+						variant="outline"
+						size="sm"
 					>
 						前へ
-					</button>
+					</Button>
 
 					<div className="flex gap-1">
 						{Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-							<button
+							<Button
 								key={page}
 								onClick={() => setCurrentPage(page)}
-								className={`px-3 py-2 rounded-lg text-sm transition ${
-									page === currentPage
-										? 'bg-blue-600 text-white'
-										: 'border hover:bg-gray-100'
-								}`}
+								variant={page === currentPage ? 'default' : 'outline'}
+								size="sm"
+								className="min-w-8"
 							>
 								{page}
-							</button>
+							</Button>
 						))}
 					</div>
 
-					<button
+					<Button
 						onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
 						disabled={currentPage === totalPages}
-						className="px-4 py-2 border rounded-lg disabled:opacity-50 hover:bg-gray-100"
+						variant="outline"
+						size="sm"
 					>
 						次へ
-					</button>
+					</Button>
 				</div>
 			)}
 		</div>

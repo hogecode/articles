@@ -5,6 +5,8 @@ import sitemap from '@astrojs/sitemap';
 import rss from '@astrojs/rss';
 import react from '@astrojs/react';
 import { defineConfig, fontProviders } from 'astro/config';
+import remarkGfm from 'remark-gfm';
+import rehypePrettyCode from 'rehype-pretty-code';
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,7 +14,17 @@ export default defineConfig({
 	base: '/',
 	output: 'static',
 	integrations: [
-		mdx(),
+		mdx({
+			remarkPlugins: [remarkGfm],
+			rehypePlugins: [
+				[
+					rehypePrettyCode,
+					{
+						theme: 'github-dark',
+					},
+				],
+			],
+		}),
 		sitemap(),
 		react(),
 	],
