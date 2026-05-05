@@ -11,7 +11,7 @@ import rehypePrettyCode from 'rehype-pretty-code';
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://hogecode.github.io/articles',
-	base: '/',
+	base: '/articles/',
 	output: 'static',
 	integrations: [
 		mdx({
