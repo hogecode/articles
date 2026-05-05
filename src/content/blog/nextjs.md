@@ -144,11 +144,11 @@ category: 'document'
 
 ##### コンポーネント階層
 
-![component-hierarchy](/md/assets/images/component-hierarchy.png)
+![component-hierarchy](../../assets/images/component-hierarchy.png)
 
 - 再帰的にレンダリングされる(ネスト)
 
-![recursive-rendering](/md/assets/images/recursive-rendering.png)
+![recursive-rendering](../../assets/images/recursive-rendering.png)
 
 ##### コロケーション
 
@@ -502,7 +502,7 @@ export async function getData() {
 
 - PRRは同じルートで静的、動的コンテンツを組み合わせる手法
 
-![PRR](/md/assets/images/prr.png)
+![PRR](../../assets/images/prr.png)
 - 静的コンテンツのシェルを送信、動的ホールは並列にストリーミングされる
 
 #### 部分的な事前レンダリングはどのように機能しますか?

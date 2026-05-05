@@ -11,14 +11,14 @@ category: 'blog'
 ### Stoplight Studio で yaml をダウンロード
 
 自分でOASを書いてもいいのですが、今回は Stoplight Studio でデフォルトの API コレクションの yaml ファイルをダウンロードします。
-![](/md/assets/images/postman_export.png)
+![](../../assets/images/postman_export.png)
 
 ### Postman にアクセス
 
 Postman で先ほどダウンロードした yaml をインポートし、コレクションを作成します。また、コレクションを右クリックし、モックサーバーを建ててみます。この際、モックサーバーが生成した URL を環境変数に入れます。
 
 試しに pm ライブラリを使った簡易的なテストを書いてみます。(モックレスポンスを書いていないので当然 404 になりますが・・・)
-![](/md/assets/images/postman_test.png)
+![](../../assets/images/postman_test.png)
 
 ### newman でテスト
 
@@ -29,7 +29,7 @@ npm install -g newman
 newman run ./api.postman_collection.json
 ```
 結果は以下のように表示されます。
-![](/md/assets/images/postman_newman.png)
+![](../../assets/images/postman_newman.png)
 
 今回は使いませんが、newmanはCICDで使うこともできます。GitHubActionsの場合、以下のようなコードを書くことになります。
 
@@ -59,7 +59,7 @@ PostmanのRunnerからでも行えますが、newmanを使って繰り返しテ�
 npm install newman-reporter-html
 newman run ./api.postman_collection.json -n 10 --reporters cli,html --reporter-html-export result.html
 ```
-![](/md/assets/images/postman_html.png)
+![](../../assets/images/postman_html.png)
 
 高度なテストならk6やJMeterなどを使うべきですが、簡易的な負荷テストならPostmanのCollection RunnerやNewmanでCIを使って実行できそうです。
 
